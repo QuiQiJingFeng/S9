@@ -3158,7 +3158,6 @@
     m.__name__ = ["Objects"];
     m.Register = function() {
         m.MovieClips = [m.bmpBrick, m.bmpChain, m.bmpLine, m.bmpPathEdge, m.bmpPathEdgeRed, m.bmpRedChess, m.bmpRedFill, m.bmpSysFill, m.bmpTealFill, m.cbtnAwards1, m.cbtnBack1, m.cbtnBack4, m.cbtnChooseSkin, m.cbtnCredits1, m.cbtnFacebook, m.cbtnIconLock, m.cbtnLevel, m.cbtnLevels, m.cbtnLevels1, m.cbtnLevels2, m.cbtnMore1, m.cbtnMore2, m.cbtnMoreLevels, m.cbtnMusic1, m.cbtnNext, m.cbtnNext1, m.cbtnPause1, m.cbtnPlay1, m.cbtnPlay2, m.cbtnPlay3, m.cbtnRestart1, m.cbtnRestart2, m.cbtnRestore1, m.cbtnScores1, m.cbtnSide, m.cbtnSkin, m.cbtnSolution1, m.cbtnSound1, m.cbtnTrack, m.cbtnTwitter, m.cbtnWalkthrough, m.cbtnX2, m.cmcAimBall, m.cmcAmazon, m.cmcAppStore, m.cmcAwardHighlight, m.cmcBG, m.cmcBGFront0, m.cmcBGFront1, m.cmcBGFront2, m.cmcBGFrontRect, m.cmcBGGGG, m.cmcBackMountain0, m.cmcBackMountain1, m.cmcBackMountain2, m.cmcBarrier, m.cmcBaseUpgradeLine, m.cmcBestScore, m.cmcBoost, m.cmcCameraBound, m.cmcCarChassis, m.cmcCarWheel, m.cmcChooseARideTxt, m.cmcClickToStart, m.cmcCoin, m.cmcCoinIcon, m.cmcControlInstructions, m.cmcCrashStar, m.cmcCreatedBy, m.cmcCreditsText, m.cmcCross, m.cmcDashedCircle, m.cmcDashedLine, m.cmcDialog, m.cmcDialogBG, m.cmcFinish, m.cmcGoldStar, m.cmcGooglePlay, m.cmcGuiStar, m.cmcIconStarSmaller, m.cmcLevelMark, m.cmcLevelStars, m.cmcLineBonus, m.cmcLivesCounter, m.cmcLock, m.cmcMusicBy, m.cmcNewStar, m.cmcPathNode, m.cmcPathNodeRed, m.cmcPausedText, m.cmcRay1, m.cmcScore, m.cmcShowPlayer, m.cmcSmallerLock, m.cmcSpikeWheelBig, m.cmcSpikeWheelSmall, m.cmcSponsor, m.cmcStar, m.cmcStarBlue, m.cmcStarCount, m.cmcStarGold, m.cmcStarIcon, m.cmcSuperHoodaTitle, m.cmcTapToStart, m.cmcTick, m.cmcTotalUpgradeLine, m.cmcTouchDevice, m.cmcTryStars, m.cmcWheelFX, m.cmcWinStar, m.cmcWindowsStore, m.cmcYes, m.ctxtBestTime, m.ctxtCompleted, m.ctxtDOCK11, m.ctxtDOCK11Gold, m.ctxtNeonBlackSmall, m.ctxtNeonWhiteBig, m.ctxtNeonWhiteSmall, m.ctxtTime, m.sponsorGGG, m.sysBlueArrow, m.sysRateStar, m.sysRectBlack, m.sysRedArrow, m.sysWhiteRect];
-        console.log("FYD-------->>>frames = ",JSON.stringify(m.Frames))
         k.RegisterTilesheet(m.BitmapName, m.MovieClips, m.Frames)
         
     };
@@ -11783,7 +11782,7 @@
         regenerate: function() {
             var a = this.component,
             b = this.component.style,
-            c = this.context,
+            context = this.context,
             d = this.bounds,
             e = ~~ (d.x - 2),
             g = ~~ (d.y - 2),
@@ -11796,11 +11795,11 @@
             else {
                 if (this.offsetX != e || this.offsetY != g) b.left = (this.offsetX = e) + "px",
                 b.top = (this.offsetY = g) + "px";
-                n != a.width || q != a.height ? (a.width = n, a.height = q) : c.clearRect(0, 0, n, q);
-                c.save();
-                c.translate( - e, -g);
-                this.render(a, c);
-                c.restore()
+                n != a.width || q != a.height ? (a.width = n, a.height = q) : context.clearRect(0, 0, n, q);
+                context.save();
+                context.translate( - e, -g);
+                this.render(a, context);
+                context.restore()
             }
         },
         regenerateTask: function() {
@@ -11901,11 +11900,11 @@
             c += this.lineWidth / 2;
             this.grab(a - c, b - c, a + c, b + c)
         },
-        drawToSurface: function(a, b, c, d, e, g, n) {
-            b.save();
-            null != c && b.transform(c.a, c.b, c.c, c.d, c.tx, c.ty);
-            this.render(a, b);
-            b.restore()
+        drawToSurface: function(a, context, c, d, e, g, n) {
+            context.save();
+            null != c && context.transform(c.a, c.b, c.c, c.d, c.tx, c.ty);
+            this.render(a, context);
+            context.restore()
         },
         hitTestLocal: function(a, b, c) {
             if (this.bounds.contains(a, b)) {
@@ -11927,10 +11926,8 @@
             b.beginPath();
             return c
         },
-        render: function(a, b) {
-            var c = 0,
-            d = this._drawMatrix,
-            e, g, n, q = 0,
+        render: function(a, context) {
+            var c = 0,d = this._drawMatrix,e, g, n, q = 0,
             f = null,
             r = this.irec,
             k = -1,
@@ -11939,113 +11936,126 @@
             s = -1,
             t = this.frec,
             p = -1;
+
             null == d && (this._drawMatrix = d = new Ba);
-            for (b.save(); k < l;) switch (g = r[++k]) {
-            case 1:
-                0 < q && (c = this._closePath(a, b, c, d, f));
-                b.lineWidth = n = t[++p];
-                0 < n ? (c |= 2, b.strokeStyle = m[++s], 2 == (g = r[++k]) ? b.lineCap = "butt": b.lineCap = 1 == g ? "square": "round", 2 == (g = r[++k]) ? b.lineJoin = "bevel": b.lineJoin = 1 == g ? "miter": "round") : (c &= -3, b.strokeStyle = null);
-                break;
-            case 2:
-            case 3:
-            case 4:
-                0 < q && (c = this._closePath(a, b, c, d, f));
-                c |= 1;
-                3 == g ? (f = m[++s].handle(), g = r[++k], 0 != r[++k] ? (c = 0 != g ? c | 8 : c & -9, d.a = t[++p], d.b = t[++p], d.c = t[++p], d.d = t[++p], d.tx = t[++p], d.ty = t[++p], c |= 4) : (b.fillStyle = b.createPattern(f, 0 != g ? "repeat": "no-repeat"), c &= -5)) : (b.fillStyle = m[++s], c &= -5);
-                q = 0;
-                break;
-            case 9:
-                0 < q && (c = this._closePath(a, b, c, d, f), q = 0);
-                c &= -2;
-                break;
-            case 10:
-                b.moveTo(t[++p], t[++p]);
-                q++;
-                break;
-            case 11:
-                b.lineTo(t[++p], t[++p]);
-                q++;
-                break;
-            case 12:
-                b.quadraticCurveTo(t[++p], t[++p], t[++p], t[++p]);
-                q++;
-                break;
-            case 13:
-                b.rect(t[++p], t[++p], t[++p], t[++p]);
-                q++;
-                break;
-            case 14:
-                g = t[++p];
-                n = t[++p];
-                var u = t[++p];
-                0 > u && (u = -u);
-                b.moveTo(g + u, n);
-                0 != u && b.arc(g, n, u, 0, 2 * Math.PI, !0);
-                q++;
-                break;
-            case 17:
-                g = t[++p];
-                n = t[++p];
-                var y = t[++p],
-                w = t[++p],
-                u = g + y / 2,
-                x = n + w / 2,
-                z = g + y,
-                v = n + w,
-                y = 0.275892 * y,
-                w = 0.275892 * w;
-                b.moveTo(u, n);
-                b.bezierCurveTo(u + y, n, z, x - w, z, x);
-                b.bezierCurveTo(z, x + w, u + y, v, u, v);
-                b.bezierCurveTo(u - y, v, g, x + w, g, x);
-                b.bezierCurveTo(g, x - w, u - y, n, u, n);
-                q++;
-                break;
-            case 15:
-                g = t[++p];
-                n = t[++p];
-                u = t[++p];
-                x = t[++p];
-                z = t[++p];
-                v = t[++p];
-                null == v ? (b.moveTo(g + z, n + x), b.arcTo(g + u - z, n + x - z, g + u, n + x - z, z), b.arcTo(g + u, n + z, g + u - z, n, z), b.arcTo(g + z, n, g, n + z, z), b.arcTo(g + z, n + x - z, g + z, n + x, z)) : (b.moveTo(g + z, n + x), b.lineTo(g + u - z, n + x), b.quadraticCurveTo(g + u, n + x, g + u, n + x - v), b.lineTo(g + u, n + v), b.quadraticCurveTo(g + u, n, g + u - z, n), b.lineTo(g + z, n), b.quadraticCurveTo(g, n, g, n + v), b.lineTo(g, n + x - v), b.quadraticCurveTo(g, n + x, g + z, n + x));
-                q++;
-                break;
-            case 16:
-                g = m[++s].handle();
-                w = r[++k];
-                n = 0 != (w & 1);
-                var u = 0 != (w & 2),
-                x = 0 != (w & 8),
-                z = 0 != (w & 16),
-                v = r[++k],
-                C,
-                B,
-                F,
-                I,
-                A,
-                J;
-                b.save();
-                for (b.globalCompositeOperation = 0 != (w & 65536) ? "lighter": "source-over"; 0 <= --v;) w = t[++p],
-                y = t[++p],
-                C = t[++p],
-                B = t[++p],
-                F = t[++p],
-                I = t[++p],
-                A = t[++p],
-                J = t[++p],
-                b.save(),
-                z ? b.transform(t[++p], t[++p], t[++p], t[++p], w, y) : (b.translate(w, y), n && b.scale(e = t[++p], e), u && b.rotate(t[++p])),
-                x && (b.globalAlpha = t[++p]),
-                b.drawImage(g, F, I, A, J, -C, -B, A, J),
-                b.restore();
-                b.restore();
-                break;
-            default:
-                throw new h(4E3 + g);
+            for (context.save(); k < l;) {
+                
+                if(g != undefined){
+                    console.log("g = ",g)
+                }
+                switch (g = r[++k]) {
+                case 1:
+                    0 < q && (c = this._closePath(a, context, c, d, f));
+                    context.lineWidth = n = t[++p];
+                    0 < n ? (c |= 2, context.strokeStyle = m[++s], 2 == (g = r[++k]) ? context.lineCap = "butt": context.lineCap = 1 == g ? "square": "round", 2 == (g = r[++k]) ? context.lineJoin = "bevel": context.lineJoin = 1 == g ? "miter": "round") : (c &= -3, context.strokeStyle = null);
+                    break;
+                case 2:
+                case 3:
+                case 4:
+                    0 < q && (c = this._closePath(a, context, c, d, f));
+                    c |= 1;
+                    3 == g ? (f = m[++s].handle(), g = r[++k], 0 != r[++k] ? (c = 0 != g ? c | 8 : c & -9, d.a = t[++p], d.b = t[++p], d.c = t[++p], d.d = t[++p], d.tx = t[++p], d.ty = t[++p], c |= 4) : (context.fillStyle = context.createPattern(f, 0 != g ? "repeat": "no-repeat"), c &= -5)) : (context.fillStyle = m[++s], c &= -5);
+                    q = 0;
+                    break;
+                case 9:
+                    0 < q && (c = this._closePath(a, context, c, d, f), q = 0);
+                    c &= -2;
+                    break;
+                case 10:
+                    var x2 = t[++p]
+                    var y2 = t[++p]
+                    console.log("move =>",x2,y2)
+                    context.moveTo(x2,y2);
+                    q++;
+                    break;
+                case 11:
+                    var x1 = t[++p]
+                    var y1 = t[++p]
+                    console.log("lineTo =>",x1,y1)
+                    context.lineTo(x1,y1);
+                    q++;
+                    break;
+                case 12:
+                    context.quadraticCurveTo(t[++p], t[++p], t[++p], t[++p]);
+                    q++;
+                    break;
+                case 13:
+                    context.rect(t[++p], t[++p], t[++p], t[++p]);
+                    q++;
+                    break;
+                case 14:
+                    g = t[++p];
+                    n = t[++p];
+                    var u = t[++p];
+                    0 > u && (u = -u);
+                    context.moveTo(g + u, n);
+                    0 != u && context.arc(g, n, u, 0, 2 * Math.PI, !0);
+                    q++;
+                    break;
+                case 17:
+                    g = t[++p];
+                    n = t[++p];
+                    var y = t[++p],
+                    w = t[++p],
+                    u = g + y / 2,
+                    x = n + w / 2,
+                    z = g + y,
+                    v = n + w,
+                    y = 0.275892 * y,
+                    w = 0.275892 * w;
+                    context.moveTo(u, n);
+                    context.bezierCurveTo(u + y, n, z, x - w, z, x);
+                    context.bezierCurveTo(z, x + w, u + y, v, u, v);
+                    context.bezierCurveTo(u - y, v, g, x + w, g, x);
+                    context.bezierCurveTo(g, x - w, u - y, n, u, n);
+                    q++;
+                    break;
+                case 15:
+                    g = t[++p];
+                    n = t[++p];
+                    u = t[++p];
+                    x = t[++p];
+                    z = t[++p];
+                    v = t[++p];
+                    null == v ? (context.moveTo(g + z, n + x), context.arcTo(g + u - z, n + x - z, g + u, n + x - z, z), context.arcTo(g + u, n + z, g + u - z, n, z), context.arcTo(g + z, n, g, n + z, z), context.arcTo(g + z, n + x - z, g + z, n + x, z)) : (context.moveTo(g + z, n + x), context.lineTo(g + u - z, n + x), context.quadraticCurveTo(g + u, n + x, g + u, n + x - v), context.lineTo(g + u, n + v), context.quadraticCurveTo(g + u, n, g + u - z, n), context.lineTo(g + z, n), context.quadraticCurveTo(g, n, g, n + v), context.lineTo(g, n + x - v), context.quadraticCurveTo(g, n + x, g + z, n + x));
+                    q++;
+                    break;
+                case 16:
+                    g = m[++s].handle();
+                    w = r[++k];
+                    n = 0 != (w & 1);
+                    var u = 0 != (w & 2),
+                    x = 0 != (w & 8),
+                    z = 0 != (w & 16),
+                    v = r[++k],
+                    C,
+                    B,
+                    F,
+                    I,
+                    A,
+                    J;
+                    context.save();
+                    for (context.globalCompositeOperation = 0 != (w & 65536) ? "lighter": "source-over"; 0 <= --v;) w = t[++p],
+                    y = t[++p],
+                    C = t[++p],
+                    B = t[++p],
+                    F = t[++p],
+                    I = t[++p],
+                    A = t[++p],
+                    J = t[++p],
+                    context.save(),
+                    z ? context.transform(t[++p], t[++p], t[++p], t[++p], w, y) : (context.translate(w, y), n && context.scale(e = t[++p], e), u && context.rotate(t[++p])),
+                    x && (context.globalAlpha = t[++p]),
+                    context.drawImage(g, F, I, A, J, -C, -B, A, J),
+                    context.restore();
+                    context.restore();
+                    break;
+                default:
+                    throw new h(4E3 + g);
+                }
             }
-            0 < q && this._closePath(a, b, c, d, f);
-            b.restore()
+            0 < q && this._closePath(a, context, c, d, f);
+            context.restore()
         },
         __class__: He
     };
